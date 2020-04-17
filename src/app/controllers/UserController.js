@@ -3,6 +3,11 @@ import * as Yup from 'yup'
 import User from '../models/User'
 
 class UserController {
+  async index(req, res) {
+    const users = await User.findAll({})
+    return res.json(users)
+  }
+
   async store(req, res) {
     const schema = Yup.object().shape({
       name: Yup.string().required(),
@@ -33,20 +38,16 @@ class UserController {
   async update(req, res) {
     const schema = Yup.object().shape({
       name: Yup.string(),
-      email: Yup.string()
-        .email()
-        .required(),
+      email: Yup.string().email(),
       oldPassword: Yup.string().min(6),
       password: Yup.string()
         .min(6)
         .when('oldPassword', (oldPassword, field) =>
           oldPassword ? field.required() : field
         ),
-      confirmPassword: Yup.string()
-        .min(6)
-        .when('password', (password, field) =>
-          password ? field.required().oneOf([Yup.ref('password')]) : field
-        ),
+      confirmPassword: Yup.string().when('password', (password, field) =>
+        password ? field.required().oneOf([Yup.ref('password')]) : field
+      ),
     })
 
     if (!(await schema.isValid(req.body))) {
@@ -54,19 +55,16 @@ class UserController {
     }
 
     const { email, oldPassword } = req.body
-
     const user = await User.findByPk(req.userId)
-
-    if (email !== user.email) {
+    if (user.email !== email) {
       const userExists = await User.findOne({
-        where: { email: req.body.email },
+        where: { email },
       })
-
       if (userExists) {
-        return res.status(400).json({ error: 'User already exists' })
+        return res.status(400).json({ error: 'User already exists.' })
       }
     }
-
+    // só faço isso se ele informou a senha antiga, isto é, quer alterar a senha
     if (oldPassword && !(await user.checkPassword(oldPassword))) {
       return res.status(401).json({ error: 'Password does not match.' })
     }
@@ -74,6 +72,17 @@ class UserController {
     const { id, name, provider } = await user.update(req.body)
 
     return res.json({ id, name, email, provider })
+  }
+
+  async destroy(req, res) {
+    const { id } = req.params
+    await User.destroy({
+      where: { id },
+    })
+
+    const users = await User.findAll()
+
+    return res.json(users)
   }
 }
 
