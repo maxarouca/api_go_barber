@@ -15,7 +15,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: test ssh key
-        run: echo ${{ secrets.SSH_KEY }}
+        run: echo ${{ secrets.SSH_USERNAME }}
       - name: executing remote ssh commands using ssh key
         uses: appleboy/ssh-action@master
         with:
