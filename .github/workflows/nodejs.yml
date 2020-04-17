@@ -19,7 +19,7 @@ jobs:
           hosts: 161.35.51.99
           user: deploy
           private_key: ${{ secrets.PRIVATE_SSH_KEY }}
-          command: |
+          commands: |
             cd ~/api_go_barber
             git pull origin master
             npm install
