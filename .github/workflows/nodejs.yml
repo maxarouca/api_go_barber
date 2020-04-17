@@ -18,7 +18,7 @@ jobs:
       with:
         host: 161.35.51.99
         username: deploy
-        key: ${{ secrets.PRIVATE_KEY }}
+        key: ${{ secrets.SSH_KEY }}
         port: 22
         script: ls -la
     
