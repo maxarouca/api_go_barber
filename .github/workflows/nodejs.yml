@@ -22,7 +22,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
-            cd ~/node-github-demo
+            cd ~/api_go_barber
             git pull origin master
             npm install
             npm run build
