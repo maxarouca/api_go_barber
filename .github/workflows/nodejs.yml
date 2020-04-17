@@ -13,13 +13,14 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Run a command remotely
-        uses: docker://evaneos/ssh-action:0.1.0
+      - name: executing remote ssh commands using ssh key
+        uses: appleboy/ssh-action@master
         with:
-          hosts: 161.35.51.99
-          user: deploy
-          private_key: ${{ secrets.PRIVATE_SSH_KEY }}
-          commands: |
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.PORT }}
+          script: |
             cd ~/api_go_barber
             git pull origin master
             npm install
