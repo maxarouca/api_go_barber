@@ -13,11 +13,14 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: test ssh key
+        uses: actions/checkout@v1
+        run: echo ${{ secrets.SSH_KEY }}
       - name: executing remote ssh commands using ssh key
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.HOST }}
-          username: root
+          username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
