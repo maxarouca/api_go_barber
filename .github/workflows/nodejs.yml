@@ -23,8 +23,8 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
+    - run: cd ~/api_go_barber
     - run: pwd
-    - run: cd /home/deploy/api_go_barber
     - run: git pull origin master
     - run: npm install
     - run: npm run build
