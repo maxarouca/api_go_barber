@@ -10,26 +10,13 @@ on:
 
 jobs:
   build:
-
-    runs-on: self-hosted
-
-    strategy:
-      matrix:
-        node-version: [12.x]
-
+    name: Example
+    runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
+    - name: Execute SSH commmands on remote server
+      uses: JimCronqvist/action-ssh@master
       with:
-        node-version: ${{ matrix.node-version }}
-    - run: cd ./../../
-    - run: pwd
-    - run: git pull origin master
-    - run: npm install
-    - run: npm run build
-    - run: npx sequelize db:migrate
-    - run: pm2 restart node-app
-      env:
-        CI: true
+        hosts: 'deploy@161.35.51.99'
+        privateKey: ${{ secrets.PRIVATE_KEY }}
+        command: ls -lah
 
