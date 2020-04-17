@@ -10,13 +10,16 @@ on:
 
 jobs:
   build:
-    name: Example
+    name: Build
     runs-on: ubuntu-latest
     steps:
-    - name: Execute SSH commmands on remote server
-      uses: JimCronqvist/action-ssh@master
+    - name: executing remote ssh commands using ssh key
+      uses: appleboy/ssh-action@master
       with:
-        hosts: 'deploy@161.35.51.99'
-        privateKey: ${{ secrets.PRIVATE_KEY }}
-        command: ls -lah
+        host: 161.35.51.99
+        username: deploy
+        key: ${{ secrets.PRIVATE_KEY }}
+        port: 22
+        script: ls -la
+    
 
