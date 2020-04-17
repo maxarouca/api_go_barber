@@ -16,6 +16,10 @@ jobs:
       - name: Execute SSH commmands on remote server
         uses: fifsky/ssh-action@master
         with:
+          host: ${{ secrets.SSH_HOST }}
+          user: deploy
+          key: ${{ secrets.SSH_KEY}}
+          args: "-tt -vvv"
           command: |
             cd ~/api_go_barber
             git pull origin master
@@ -23,7 +27,4 @@ jobs:
             npm run build
             npx sequelize db:migrate
             pm2 restart node-app
-          host: ${{ secrets.SSH_HOST }}
-          user: deploy
-          key: ${{ secrets.SSH_KEY}}
-          args: "-tt -vvv"
+
