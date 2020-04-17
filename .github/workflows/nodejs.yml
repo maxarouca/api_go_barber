@@ -10,15 +10,12 @@ on:
     branches: [ master ]
 
 jobs:
-  deploy:
-      runs-on: ubuntu-latest
-
-      steps:
+  build:
+    runs-on: ubuntu-latest
+    steps:
       - name: Execute SSH commmands on remote server
-        uses: JimCronqvist/action-ssh@master
+        uses: fifsky/ssh-action@master
         with:
-          hosts: 'deploy@161.35.51.99'
-          privateKey: ${{ secrets.SSH_KEY }}
           command: |
             cd ~/api_go_barber
             git pull origin master
@@ -26,3 +23,7 @@ jobs:
             npm run build
             npx sequelize db:migrate
             pm2 restart node-app
+          host: ${{ secrets.SSH_HOST }}
+          user: deploy
+          key: ${{ secrets.SSH_KEY}}
+          args: "-tt -vvv"
