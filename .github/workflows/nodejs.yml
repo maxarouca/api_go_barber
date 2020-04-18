@@ -16,7 +16,7 @@ jobs:
         HOST: ${{ secrets.REMOTE_HOST }}
         USERNAME: ${{ secrets.REMOTE_USER }}
         PORT: 22
-        KEY: ${{ secrets.SSH_KEY }}
+        KEY: ${{ secrets.SSH_PRIVATE_KEY }}
       with:
         source: "."
         target: "/opt/app"
@@ -27,5 +27,5 @@ jobs:
         OST: ${{ secrets.REMOTE_HOST }}
         USERNAME: ${{ secrets.REMOTE_USER }}
         PORT: 22
-        KEY: ${{ secrets.SSH_KEY }}
+        KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         script: cat /opt/app/README.md
