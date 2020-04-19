@@ -17,12 +17,12 @@ jobs:
       run: npm install
     - name: Run build task
       run: npm run build --if-present
+    - name: Install SSH key
+      uses: shimataro/ssh-key-action@v2
+      with:
+        key: ${{ secrets.SSH_KEY }}
+        name: id_rsa # optional
+        known_hosts: ${{ secrets.KNOWN_HOSTS }}
+        config: ${{ secrets.CONFIG }} # ssh_config; optional
     - name: Deploy to Server
-      uses: easingthemes/ssh-deploy@v2.1.1
-      env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_KEY }}
-          ARGS: "-rltgoDzvO --delete"
-          SOURCE: "dist/"
-          REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
-          REMOTE_USER: ${{ secrets.REMOTE_USER }}
-          TARGET: ${{ secrets.REMOTE_TARGET }}
+      run: rsync ./dist/ deploy@161.35.51.99:api_go_barber/dist
