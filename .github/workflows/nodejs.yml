@@ -22,7 +22,7 @@ jobs:
       with:
         key: ${{ secrets.SSH_KEY }}
         name: id_rsa # optional
-        known_hosts: ${{ secrets.KNOWN_HOSTS }}
+#        known_hosts: ${{ secrets.KNOWN_HOSTS }}
         config: ${{ secrets.CONFIG }} # ssh_config; optional
     - name: Deploy to Server
       run: rsync ./dist/ deploy@161.35.51.99:api_go_barber/dist
